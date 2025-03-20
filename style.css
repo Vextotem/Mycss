@@ -1,0 +1,177 @@
+/* Reset margin and padding for all elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 10px;
+  color: #FFFFFF;
+  background-color: #1a1a1a; /* Added dark background */
+}
+
+.match-container {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: inherit;
+  border: 1px solid #3d3d3d; /* Darker border */
+  background-color: #333;
+  transition: all 0.3s ease; /* Smooth transitions */
+}
+
+.match-container:hover {
+  background-color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+.match-container.active {
+  background-color: #000000;
+}
+
+/* Event Header with Logo */
+.event-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  position: relative;
+  color: #FA8072;
+}
+
+.event-header:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #FA8072;
+}
+
+.event-logo {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 2px solid #FA8072;
+  padding: 2px;
+  background: #fff;
+}
+
+/* Team Images */
+.team-images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 15px;
+}
+
+.team-images img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 2px solid #FA8072;
+  padding: 2px;
+  background: #fff;
+}
+
+/* Match Details */
+.matchup {
+  text-align: center;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #FA8072;
+}
+
+.details {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.details .date, 
+.details .time {
+  background-color: #444;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* Status Indicators */
+.status {
+  text-align: center;
+  padding: 5px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.status.Online {
+  background-color: #2ecc71; /* Green background */
+  color: white;
+}
+
+.live-icon {
+  color: #FF4500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px;
+}
+
+.live-icon svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+.countdown {
+  color: #FFD700;
+  font-weight: bold;
+  padding: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .event-header {
+    font-size: 1.1em;
+  }
+  
+  .event-logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .team-images img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .details {
+    gap: 10px;
+  }
+
+  .details .date, 
+  .details .time {
+    font-size: 0.8em;
+  }
+}
+
+.match-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
