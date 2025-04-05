@@ -18,36 +18,61 @@ document.addEventListener('DOMContentLoaded', function() {
         container.className = 'league-matches-container';
         
         // Process each match link
-        matchLinks.forEach(matchLink => {
-            // Get the match container (the div with class "live-match")
-            const matchContainer = matchLink.querySelector('.live-match');
+        if (matchLinks.length > 0) {
+            matchLinks.forEach((matchLink, index) => {
+                // Get the match container (the div with class "live-match")
+                const matchContainer = matchLink.querySelector('.live-match');
+                
+                if (!matchContainer) return;
+                
+                // Clone the match container to avoid removing it from original structure
+                const clonedMatchContainer = matchContainer.cloneNode(true);
+                
+                // Clear the matchLink content
+                matchLink.innerHTML = '';
+                
+                // Append matchContainer to the matchLink
+                matchLink.appendChild(clonedMatchContainer);
+                container.appendChild(matchLink);
+                
+                // Add the static HTML block after each schedule
+                const staticHTML = `
+                    <div class="separator" style="clear: both; margin-top: 0; text-align: center; width: 100%;">
+                        <a href="https://sinni.my/yZeYg" style="display: block;">
+                            <img alt="" style="width: 100%; height: auto;" src="https://cdn.jsdelivr.net/gh/Vextotem/Mycss@main/1000126223.gif" />
+                        </a>
+                    </div>
+                `;
+                
+                // Create temporary container for the static HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = staticHTML;
+                container.appendChild(tempDiv);
+            });
+        } else {
+            // If no match links found in standard structure, handle direct content
+            // This catches edge cases like the UFC event
+            const directMatches = contentDiv.querySelectorAll('.live-match');
             
-            if (!matchContainer) return;
-            
-            // Clone the match container to avoid removing it from original structure
-            const clonedMatchContainer = matchContainer.cloneNode(true);
-            
-            // Clear the matchLink content
-            matchLink.innerHTML = '';
-            
-            // Append matchContainer to the matchLink
-            matchLink.appendChild(clonedMatchContainer);
-            container.appendChild(matchLink);
-            
-            // Add the static HTML block after each schedule
-            const staticHTML = `
-                <div class="separator" style="clear: both; margin-top: 0; text-align: center; width: 100%;">
-                    <a href="https://sinni.my/yZeYg" style="display: block;">
-                        <img alt="" style="width: 100%; height: auto;" src="https://cdn.jsdelivr.net/gh/Vextotem/Mycss@main/1000126223.gif" />
-                    </a>
-                </div>
-            `;
-            
-            // Create temporary container for the static HTML
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = staticHTML;
-            container.appendChild(tempDiv);
-        });
+            directMatches.forEach(matchElement => {
+                // Add the original match element
+                container.appendChild(matchElement.closest('a') || matchElement);
+                
+                // Add the static HTML block after each match
+                const staticHTML = `
+                    <div class="separator" style="clear: both; margin-top: 0; text-align: center; width: 100%;">
+                        <a href="https://sinni.my/yZeYg" style="display: block;">
+                            <img alt="" style="width: 100%; height: auto;" src="https://cdn.jsdelivr.net/gh/Vextotem/Mycss@main/1000126223.gif" />
+                        </a>
+                    </div>
+                `;
+                
+                // Create temporary container for the static HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = staticHTML;
+                container.appendChild(tempDiv);
+            });
+        }
         
         // Replace the content of the original content div with our new container
         contentDiv.innerHTML = '';
