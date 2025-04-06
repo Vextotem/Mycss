@@ -1,4 +1,4 @@
-// Script to display match schedules with separators - using live-match approach only
+// Script to display match schedules with separators
 document.addEventListener('DOMContentLoaded', function() {
     // Get all league sections
     const leagueSections = document.querySelectorAll('.league-title');
@@ -10,32 +10,55 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!contentDiv) return;
         
-        // Get all live-match elements in this section (direct approach)
-        const liveMatches = contentDiv.querySelectorAll('.live-match');
+        // Get all match links in this section
+        const matchLinks = contentDiv.querySelectorAll('a[id^="link"]');
         
         // Create a container for this league's matches
         const container = document.createElement('div');
         container.className = 'league-matches-container';
         
-        // Process each live-match
-        if (liveMatches.length > 0) {
-            liveMatches.forEach(matchElement => {
-                // Find the parent anchor or create a wrapper if none exists
-                let matchLink = matchElement.closest('a');
+        // Process each match link
+        if (matchLinks.length > 0) {
+            matchLinks.forEach((matchLink, index) => {
+                // Get the match container (the div with class "live-match")
+                const matchContainer = matchLink.querySelector('.live-match');
                 
-                if (!matchLink) {
-                    // If there's no parent anchor, wrap the match in one
-                    matchLink = document.createElement('a');
-                    matchLink.href = '#'; // Default href
-                    matchLink.id = 'link-' + Math.random().toString(36).substr(2, 9); // Generate random ID
-                    matchElement.parentNode.insertBefore(matchLink, matchElement);
-                    matchLink.appendChild(matchElement);
-                }
+                if (!matchContainer) return;
                 
-                // Add the match to our container
-                container.appendChild(matchLink.cloneNode(true));
+                // Clone the match container to avoid removing it from original structure
+                const clonedMatchContainer = matchContainer.cloneNode(true);
                 
-                // Add the separator after each match
+                // Clear the matchLink content
+                matchLink.innerHTML = '';
+                
+                // Append matchContainer to the matchLink
+                matchLink.appendChild(clonedMatchContainer);
+                container.appendChild(matchLink);
+                
+                // Add the static HTML block after each schedule
+                const staticHTML = `
+                    <div class="separator" style="clear: both; margin-top: 0; text-align: center; width: 100%;">
+                        <a href="https://sinni.my/yZeYg" style="display: block;">
+                            <img alt="" style="width: 100%; height: auto;" src="https://cdn.jsdelivr.net/gh/Vextotem/Mycss@main/1000126223.gif" />
+                        </a>
+                    </div>
+                `;
+                
+                // Create temporary container for the static HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = staticHTML;
+                container.appendChild(tempDiv);
+            });
+        } else {
+            // If no match links found in standard structure, handle direct content
+            // This catches edge cases like the UFC event
+            const directMatches = contentDiv.querySelectorAll('.live-match');
+            
+            directMatches.forEach(matchElement => {
+                // Add the original match element
+                container.appendChild(matchElement.closest('a') || matchElement);
+                
+                // Add the static HTML block after each match
                 const staticHTML = `
                     <div class="separator" style="clear: both; margin-top: 0; text-align: center; width: 100%;">
                         <a href="https://sinni.my/yZeYg" style="display: block;">
@@ -72,21 +95,16 @@ function toggleContent(id) {
     }
 }
 
-// Initialize countdown timers - focusing on .live-match elements
+// Initialize countdown timers
 function initCountdowns() {
-    const liveMatches = document.querySelectorAll('.live-match');
+    const countdownElements = document.querySelectorAll('.countdown');
     
-    liveMatches.forEach(matchElement => {
-        const countdownElement = matchElement.querySelector('.countdown');
-        if (!countdownElement) return;
+    countdownElements.forEach(element => {
+        const targetDate = new Date(element.getAttribute('data-target-date'));
+        const contentId = element.getAttribute('data-content-id') || 
+                          element.closest('.live-match')?.closest('[id]')?.id;
         
-        const targetDate = new Date(countdownElement.getAttribute('data-target-date'));
-        const matchId = matchElement.id || 
-                       matchElement.closest('[id]')?.id || 
-                       'match-' + Math.random().toString(36).substr(2, 9);
-        
-        // Ensure the match element has an ID for later reference
-        if (!matchElement.id) matchElement.id = matchId;
+        if (!contentId) return;
         
         // Update the countdown every second
         const countdownInterval = setInterval(() => {
@@ -101,86 +119,194 @@ function initCountdowns() {
             
             // Display the result
             if (distance > 0) {
-                countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
             } else {
                 // Countdown reached zero, show "LIVE"
-                countdownElement.innerHTML = "LIVE";
+                element.innerHTML = "LIVE";
                 
-                // Set a timeout to hide the match after 5 hours (300 minutes)
+                // Set a timeout to hide content after 5 hours (300 minutes)
                 const hideDelay = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
                 
                 setTimeout(() => {
-                    // Hide the match element directly
-                    matchElement.style.display = "none";
-                    
-                    // Check if all matches in a section are hidden, and if so, hide the section
-                    const parentContent = matchElement.closest('[id]');
-                    if (parentContent) {
-                        const visibleMatches = parentContent.querySelectorAll('.live-match:not([style*="display: none"])');
-                        if (visibleMatches.length === 0) {
-                            parentContent.style.display = "none";
-                            // Also update the parent league title if needed
-                            const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${parentContent.id}"]`);
-                            if (parentLeagueTitle) {
-                                parentLeagueTitle.classList.add('expired-content');
-                            }
+                    // Find and hide the content
+                    const contentElement = document.getElementById(contentId);
+                    if (contentElement) {
+                        contentElement.style.display = "none";
+                        // Also update the parent element if needed
+                        const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${contentId}"]`);
+                        if (parentLeagueTitle) {
+                            parentLeagueTitle.classList.add('expired-content');
                         }
+                        
+                        // Set a timeout to make content reappear after 3 more hours
+                        const reappearDelay = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
+                        setTimeout(() => {
+                            // Show the content again
+                            if (contentElement) {
+                                contentElement.style.display = "block";
+                                // Remove expired class
+                                if (parentLeagueTitle) {
+                                    parentLeagueTitle.classList.remove('expired-content');
+                                }
+                                // Remove from localStorage to reset the cycle
+                                localStorage.removeItem(`expireContent_${contentId}`);
+                            }
+                        }, reappearDelay);
                     }
                 }, hideDelay);
                 
                 // Clear the countdown interval
                 clearInterval(countdownInterval);
                 
-                // Store the expiration time in localStorage to maintain state across page refreshes
+                // Store the expiration and reappearance times in localStorage
                 const expirationTime = now + hideDelay;
-                localStorage.setItem(`expireMatch_${matchId}`, expirationTime);
+                const reappearTime = expirationTime + (3 * 60 * 60 * 1000); // Add 3 hours to expiration
+                localStorage.setItem(`expireContent_${contentId}`, JSON.stringify({
+                    expireAt: expirationTime,
+                    reappearAt: reappearTime
+                }));
             }
         }, 1000);
         
-        // Check if match should already be hidden (if page was refreshed)
-        const storedExpirationTime = localStorage.getItem(`expireMatch_${matchId}`);
-        if (storedExpirationTime && parseInt(storedExpirationTime) < new Date().getTime()) {
-            // If already expired, hide immediately
-            matchElement.style.display = "none";
+        // Check content state on page load (if page was refreshed)
+        const storedData = localStorage.getItem(`expireContent_${contentId}`);
+        if (storedData) {
+            try {
+                const { expireAt, reappearAt } = JSON.parse(storedData);
+                const now = new Date().getTime();
+                const contentElement = document.getElementById(contentId);
+                const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${contentId}"]`);
+                
+                if (contentElement) {
+                    // If we're in between expiration and reappearance time
+                    if (now >= expireAt && now < reappearAt) {
+                        contentElement.style.display = "none";
+                        if (parentLeagueTitle) {
+                            parentLeagueTitle.classList.add('expired-content');
+                        }
+                        
+                        // Set timeout for when to reappear
+                        const timeUntilReappear = reappearAt - now;
+                        if (timeUntilReappear > 0) {
+                            setTimeout(() => {
+                                contentElement.style.display = "block";
+                                if (parentLeagueTitle) {
+                                    parentLeagueTitle.classList.remove('expired-content');
+                                }
+                                localStorage.removeItem(`expireContent_${contentId}`);
+                            }, timeUntilReappear);
+                        }
+                    } 
+                    // If past reappearance time, make sure it's visible and clear the data
+                    else if (now >= reappearAt) {
+                        contentElement.style.display = "block";
+                        if (parentLeagueTitle) {
+                            parentLeagueTitle.classList.remove('expired-content');
+                        }
+                        localStorage.removeItem(`expireContent_${contentId}`);
+                    }
+                }
+            } catch (e) {
+                console.error("Error parsing stored content data:", e);
+                localStorage.removeItem(`expireContent_${contentId}`);
+            }
         }
     });
     
-    // Check for empty sections after hiding expired matches
-    checkEmptySections();
+    // Add a function to check all contents on page load
+    checkExpiredContent();
 }
 
-// Function to check and hide empty sections
-function checkEmptySections() {
-    // Get all match expiration keys from localStorage
-    const matchKeys = Object.keys(localStorage).filter(key => key.startsWith('expireMatch_'));
+// Function to check and handle expired content on page load
+function checkExpiredContent() {
+    // Get all keys from localStorage that start with 'expireContent_'
+    const keys = Object.keys(localStorage).filter(key => key.startsWith('expireContent_'));
+    const now = new Date().getTime();
     
-    // Process all content sections
-    document.querySelectorAll('[id^="content"]').forEach(contentSection => {
-        // Count visible matches in this section
-        const matches = contentSection.querySelectorAll('.live-match');
-        let visibleCount = 0;
+    keys.forEach(key => {
+        const contentId = key.replace('expireContent_', '');
+        const contentElement = document.getElementById(contentId);
+        const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${contentId}"]`);
         
-        matches.forEach(match => {
-            const matchId = match.id;
-            if (!matchId) return;
-            
-            const expirationTime = localStorage.getItem(`expireMatch_${matchId}`);
-            if (!expirationTime || parseInt(expirationTime) > new Date().getTime()) {
-                visibleCount++;
+        try {
+            const storedData = localStorage.getItem(key);
+            // Handle both old format (just expiration time) and new format (object with expireAt and reappearAt)
+            if (storedData.startsWith('{')) {
+                // New format
+                const { expireAt, reappearAt } = JSON.parse(storedData);
+                
+                if (contentElement) {
+                    // If between expiration and reappearance
+                    if (now >= expireAt && now < reappearAt) {
+                        contentElement.style.display = "none";
+                        if (parentLeagueTitle) {
+                            parentLeagueTitle.classList.add('expired-content');
+                        }
+                        
+                        // Set timeout for reappearance
+                        const timeUntilReappear = reappearAt - now;
+                        if (timeUntilReappear > 0) {
+                            setTimeout(() => {
+                                contentElement.style.display = "block";
+                                if (parentLeagueTitle) {
+                                    parentLeagueTitle.classList.remove('expired-content');
+                                }
+                                localStorage.removeItem(key);
+                            }, timeUntilReappear);
+                        }
+                    } 
+                    // If past reappearance time
+                    else if (now >= reappearAt) {
+                        contentElement.style.display = "block";
+                        if (parentLeagueTitle) {
+                            parentLeagueTitle.classList.remove('expired-content');
+                        }
+                        localStorage.removeItem(key);
+                    }
+                }
             } else {
-                match.style.display = "none";
+                // Old format - just expiration time with no reappearance
+                const expirationTime = parseInt(storedData);
+                
+                // Convert old format to new format with reappear time (3 hours after expiration)
+                const reappearTime = expirationTime + (3 * 60 * 60 * 1000);
+                
+                if (contentElement) {
+                    if (now >= expirationTime && now < reappearTime) {
+                        contentElement.style.display = "none";
+                        if (parentLeagueTitle) {
+                            parentLeagueTitle.classList.add('expired-content');
+                        }
+                        
+                        // Update to new format
+                        localStorage.setItem(key, JSON.stringify({
+                            expireAt: expirationTime,
+                            reappearAt: reappearTime
+                        }));
+                        
+                        // Set timeout for reappearance
+                        const timeUntilReappear = reappearTime - now;
+                        if (timeUntilReappear > 0) {
+                            setTimeout(() => {
+                                contentElement.style.display = "block";
+                                if (parentLeagueTitle) {
+                                    parentLeagueTitle.classList.remove('expired-content');
+                                }
+                                localStorage.removeItem(key);
+                            }, timeUntilReappear);
+                        }
+                    } else if (now >= reappearTime) {
+                        contentElement.style.display = "block";
+                        if (parentLeagueTitle) {
+                            parentLeagueTitle.classList.remove('expired-content');
+                        }
+                        localStorage.removeItem(key);
+                    }
+                }
             }
-        });
-        
-        // If no visible matches, hide the section
-        if (visibleCount === 0 && matches.length > 0) {
-            contentSection.style.display = "none";
-            
-            // Also update the parent league title
-            const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${contentSection.id}"]`);
-            if (parentLeagueTitle) {
-                parentLeagueTitle.classList.add('expired-content');
-            }
+        } catch (e) {
+            console.error("Error processing stored data for content:", contentId, e);
+            localStorage.removeItem(key);
         }
     });
 }
