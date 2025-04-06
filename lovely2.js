@@ -1,4 +1,4 @@
-// Script to display match schedules with separators
+// Script to display match schedules with separators - using live-match approach only
 document.addEventListener('DOMContentLoaded', function() {
     // Get all league sections
     const leagueSections = document.querySelectorAll('.league-title');
@@ -10,55 +10,32 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!contentDiv) return;
         
-        // Get all match links in this section
-        const matchLinks = contentDiv.querySelectorAll('a[id^="link"]');
+        // Get all live-match elements in this section (direct approach)
+        const liveMatches = contentDiv.querySelectorAll('.live-match');
         
         // Create a container for this league's matches
         const container = document.createElement('div');
         container.className = 'league-matches-container';
         
-        // Process each match link
-        if (matchLinks.length > 0) {
-            matchLinks.forEach((matchLink, index) => {
-                // Get the match container (the div with class "live-match")
-                const matchContainer = matchLink.querySelector('.live-match');
+        // Process each live-match
+        if (liveMatches.length > 0) {
+            liveMatches.forEach(matchElement => {
+                // Find the parent anchor or create a wrapper if none exists
+                let matchLink = matchElement.closest('a');
                 
-                if (!matchContainer) return;
+                if (!matchLink) {
+                    // If there's no parent anchor, wrap the match in one
+                    matchLink = document.createElement('a');
+                    matchLink.href = '#'; // Default href
+                    matchLink.id = 'link-' + Math.random().toString(36).substr(2, 9); // Generate random ID
+                    matchElement.parentNode.insertBefore(matchLink, matchElement);
+                    matchLink.appendChild(matchElement);
+                }
                 
-                // Clone the match container to avoid removing it from original structure
-                const clonedMatchContainer = matchContainer.cloneNode(true);
+                // Add the match to our container
+                container.appendChild(matchLink.cloneNode(true));
                 
-                // Clear the matchLink content
-                matchLink.innerHTML = '';
-                
-                // Append matchContainer to the matchLink
-                matchLink.appendChild(clonedMatchContainer);
-                container.appendChild(matchLink);
-                
-                // Add the static HTML block after each schedule
-                const staticHTML = `
-                    <div class="separator" style="clear: both; margin-top: 0; text-align: center; width: 100%;">
-                        <a href="https://sinni.my/yZeYg" style="display: block;">
-                            <img alt="" style="width: 100%; height: auto;" src="https://cdn.jsdelivr.net/gh/Vextotem/Mycss@main/1000126223.gif" />
-                        </a>
-                    </div>
-                `;
-                
-                // Create temporary container for the static HTML
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = staticHTML;
-                container.appendChild(tempDiv);
-            });
-        } else {
-            // If no match links found in standard structure, handle direct content
-            // This catches edge cases like the UFC event
-            const directMatches = contentDiv.querySelectorAll('.live-match');
-            
-            directMatches.forEach(matchElement => {
-                // Add the original match element
-                container.appendChild(matchElement.closest('a') || matchElement);
-                
-                // Add the static HTML block after each match
+                // Add the separator after each match
                 const staticHTML = `
                     <div class="separator" style="clear: both; margin-top: 0; text-align: center; width: 100%;">
                         <a href="https://sinni.my/yZeYg" style="display: block;">
@@ -95,16 +72,21 @@ function toggleContent(id) {
     }
 }
 
-// Initialize countdown timers
+// Initialize countdown timers - focusing on .live-match elements
 function initCountdowns() {
-    const countdownElements = document.querySelectorAll('.countdown');
+    const liveMatches = document.querySelectorAll('.live-match');
     
-    countdownElements.forEach(element => {
-        const targetDate = new Date(element.getAttribute('data-target-date'));
-        const contentId = element.getAttribute('data-content-id') || 
-                          element.closest('.live-match')?.closest('[id]')?.id;
+    liveMatches.forEach(matchElement => {
+        const countdownElement = matchElement.querySelector('.countdown');
+        if (!countdownElement) return;
         
-        if (!contentId) return;
+        const targetDate = new Date(countdownElement.getAttribute('data-target-date'));
+        const matchId = matchElement.id || 
+                       matchElement.closest('[id]')?.id || 
+                       'match-' + Math.random().toString(36).substr(2, 9);
+        
+        // Ensure the match element has an ID for later reference
+        if (!matchElement.id) matchElement.id = matchId;
         
         // Update the countdown every second
         const countdownInterval = setInterval(() => {
@@ -119,23 +101,29 @@ function initCountdowns() {
             
             // Display the result
             if (distance > 0) {
-                element.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
             } else {
                 // Countdown reached zero, show "LIVE"
-                element.innerHTML = "LIVE";
+                countdownElement.innerHTML = "LIVE";
                 
-                // Set a timeout to hide content after 5 hours (300 minutes)
+                // Set a timeout to hide the match after 5 hours (300 minutes)
                 const hideDelay = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
                 
                 setTimeout(() => {
-                    // Find and hide the content
-                    const contentElement = document.getElementById(contentId);
-                    if (contentElement) {
-                        contentElement.style.display = "none";
-                        // Also update the parent element if needed
-                        const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${contentId}"]`);
-                        if (parentLeagueTitle) {
-                            parentLeagueTitle.classList.add('expired-content');
+                    // Hide the match element directly
+                    matchElement.style.display = "none";
+                    
+                    // Check if all matches in a section are hidden, and if so, hide the section
+                    const parentContent = matchElement.closest('[id]');
+                    if (parentContent) {
+                        const visibleMatches = parentContent.querySelectorAll('.live-match:not([style*="display: none"])');
+                        if (visibleMatches.length === 0) {
+                            parentContent.style.display = "none";
+                            // Also update the parent league title if needed
+                            const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${parentContent.id}"]`);
+                            if (parentLeagueTitle) {
+                                parentLeagueTitle.classList.add('expired-content');
+                            }
                         }
                     }
                 }, hideDelay);
@@ -145,49 +133,53 @@ function initCountdowns() {
                 
                 // Store the expiration time in localStorage to maintain state across page refreshes
                 const expirationTime = now + hideDelay;
-                localStorage.setItem(`expireContent_${contentId}`, expirationTime);
+                localStorage.setItem(`expireMatch_${matchId}`, expirationTime);
             }
         }, 1000);
         
-        // Check if content should already be hidden (if page was refreshed)
-        const storedExpirationTime = localStorage.getItem(`expireContent_${contentId}`);
+        // Check if match should already be hidden (if page was refreshed)
+        const storedExpirationTime = localStorage.getItem(`expireMatch_${matchId}`);
         if (storedExpirationTime && parseInt(storedExpirationTime) < new Date().getTime()) {
             // If already expired, hide immediately
-            const contentElement = document.getElementById(contentId);
-            if (contentElement) {
-                contentElement.style.display = "none";
-                const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${contentId}"]`);
-                if (parentLeagueTitle) {
-                    parentLeagueTitle.classList.add('expired-content');
-                }
-            }
+            matchElement.style.display = "none";
         }
     });
     
-    // Add a function to check all contents on page load
-    checkExpiredContent();
+    // Check for empty sections after hiding expired matches
+    checkEmptySections();
 }
 
-// Function to check and hide expired content on page load
-function checkExpiredContent() {
-    // Get all keys from localStorage that start with 'expireContent_'
-    const keys = Object.keys(localStorage).filter(key => key.startsWith('expireContent_'));
+// Function to check and hide empty sections
+function checkEmptySections() {
+    // Get all match expiration keys from localStorage
+    const matchKeys = Object.keys(localStorage).filter(key => key.startsWith('expireMatch_'));
     
-    keys.forEach(key => {
-        const contentId = key.replace('expireContent_', '');
-        const expirationTime = parseInt(localStorage.getItem(key));
+    // Process all content sections
+    document.querySelectorAll('[id^="content"]').forEach(contentSection => {
+        // Count visible matches in this section
+        const matches = contentSection.querySelectorAll('.live-match');
+        let visibleCount = 0;
         
-        // If expiration time has passed, hide the content
-        if (expirationTime < new Date().getTime()) {
-            const contentElement = document.getElementById(contentId);
-            if (contentElement) {
-                contentElement.style.display = "none";
-                
-                // Also update any league titles that control this content
-                const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${contentId}"]`);
-                if (parentLeagueTitle) {
-                    parentLeagueTitle.classList.add('expired-content');
-                }
+        matches.forEach(match => {
+            const matchId = match.id;
+            if (!matchId) return;
+            
+            const expirationTime = localStorage.getItem(`expireMatch_${matchId}`);
+            if (!expirationTime || parseInt(expirationTime) > new Date().getTime()) {
+                visibleCount++;
+            } else {
+                match.style.display = "none";
+            }
+        });
+        
+        // If no visible matches, hide the section
+        if (visibleCount === 0 && matches.length > 0) {
+            contentSection.style.display = "none";
+            
+            // Also update the parent league title
+            const parentLeagueTitle = document.querySelector(`.league-title[onclick*="${contentSection.id}"]`);
+            if (parentLeagueTitle) {
+                parentLeagueTitle.classList.add('expired-content');
             }
         }
     });
