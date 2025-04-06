@@ -52,21 +52,21 @@ document.addEventListener('DOMContentLoaded', function() {
         // Replace the content of the original content div with our new container
         contentDiv.innerHTML = '';
         contentDiv.appendChild(container);
+        
+        // Make sure content is always visible
+        contentDiv.style.display = "block";
     });
     
     // Initialize countdown timers
     initCountdowns();
 });
 
-// Function to toggle content visibility
+// Function to toggle content visibility - removed the hiding functionality
 function toggleContent(id) {
+    // Function kept for compatibility but no longer toggles visibility
     const content = document.getElementById(id);
-    if (content) {
-        if (content.style.display === "none") {
-            content.style.display = "block";
-        } else {
-            content.style.display = "none";
-        }
+    if (content && content.style.display !== "block") {
+        content.style.display = "block";
     }
 }
 
