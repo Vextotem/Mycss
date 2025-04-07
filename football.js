@@ -7,19 +7,89 @@ const schedules = [
      
    <!-- events -->
     {
-        event: 'F1: Japanese GP',
-        eventLogo: 'https://cdn.jsdelivr.net/gh/starballtv/img/f1.png',
-        matchup: '	F1: Japanese GP',
-        date: '2025-04-06',
-        time: '01:00',
-        team1Image: 'https://cdn.jsdelivr.net/gh/starballtv/img/f1.png',
-        team2Image: 'https://cdn.jsdelivr.net/gh/starballtv/img/f1.png',
+        event: 'U17 AFC Asian Cup',
+        eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/20163/image/dark',
+        matchup: '	Indonesia U17 v Yemen U17',
+        date: '2025-04-07',
+        time: '22:00',
+        team1Image: 'https://img.sofascore.com/api/v1/team/486196/image',
+        team2Image: 'https://img.sofascore.com/api/v1/team/468397/image',
         buttons: [
-            { text: 'Link', link: 'https://rakettim.blogspot.com/p/v22.html' },
+            { text: 'Link', link: 'https://raketextra.blogspot.com/p/v30.html' },
         ]
     },
     <!-- events -->
     
+    
+    
+    <!-- events -->
+    {
+        event: 'U17 AFC Asian Cup',
+        eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/20163/image/dark',
+        matchup: '	Vietnam U17 v Japan U17',
+        date: '2025-04-07',
+        time: '22:00',
+        team1Image: 'https://img.sofascore.com/api/v1/team/468404/image',
+        team2Image: 'https://img.sofascore.com/api/v1/team/22618/image',
+        buttons: [
+            { text: 'Link', link: 'https://raketextra.blogspot.com/p/v31.html' },
+        ]
+    },
+    <!-- events -->
+    
+    
+    
+     <!-- events -->
+    {
+        event: 'U17 AFC Asian Cup',
+        eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/20163/image/dark',
+        matchup: '	Afghanistan U17 v South Korea U17',
+        date: '2025-04-08',
+        time: '00:15',
+        team1Image: 'https://img.sofascore.com/api/v1/team/468404/image',
+        team2Image: 'https://img.sofascore.com/api/v1/team/22652/image',
+        buttons: [
+            { text: 'Link', link: 'https://raketextra.blogspot.com/p/v29.html' },
+        ]
+    },
+    <!-- events -->
+    
+    
+    
+    
+       <!-- events -->
+    {
+        event: 'U17 AFC Asian Cup',
+        eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/20163/image/dark',
+        matchup: '	UAE U17 v Australia U17',
+        date: '2025-04-08',
+        time: '00:15',
+        team1Image: 'https://img.sofascore.com/api/v1/team/22660/image',
+        team2Image: 'https://img.sofascore.com/api/v1/team/22578/image',
+        buttons: [
+            { text: 'Link', link: 'https://raketextra.blogspot.com/p/v28.html' },
+        ]
+    },
+    <!-- events -->
+    
+    
+    
+    
+    
+      <!-- events -->
+    {
+        event: 'Serie A',
+        eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/23/image/dark',
+        matchup: '	Bologna v Napoli',
+        date: '2025-04-08',
+        time: '01:45',
+        team1Image: 'https://img.sofascore.com/api/v1/team/2685/image',
+        team2Image: 'https://img.sofascore.com/api/v1/team/2714/image',
+        buttons: [
+            { text: 'Link', link: 'https://raketextra.blogspot.com/p/v27.html' },
+        ]
+    },
+    <!-- events -->
     
     
     
@@ -27,25 +97,45 @@ const schedules = [
     
      <!-- events -->
     {
-        event: 'F1: Japanese GP',
-        eventLogo: 'https://cdn.jsdelivr.net/gh/starballtv/img/f1.png',
-        matchup: '	F1: Japanese GP',
-        date: '2025-04-06',
-        time: '01:00',
-        team1Image: 'https://cdn.jsdelivr.net/gh/starballtv/img/f1.png',
-        team2Image: 'https://cdn.jsdelivr.net/gh/starballtv/img/f1.png',
+        event: 'Premier League',
+        eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/17/image/dark',
+        matchup: '	Leicester v Newcastle',
+        date: '2025-04-08',
+        time: '02:00',
+        team1Image: 'https://img.sofascore.com/api/v1/team/31/image',
+        team2Image: 'https://img.sofascore.com/api/v1/team/39/image',
         buttons: [
-            { text: 'Link', link: 'https://rakettim.blogspot.com/p/v22.html' },
+            { text: 'Link', link: 'https://raketextra.blogspot.com/p/v25.html' },
         ]
     },
     <!-- events -->
     
     
-     
-  
-     
-     
-      
+    
+    
+      <!-- events -->
+    {
+        event: 'LaLiga',
+        eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/8/image/dark',
+        matchup: '	Leganés v Osasuna',
+        date: '2025-04-08',
+        time: '02:00',
+        team1Image: 'https://img.sofascore.com/api/v1/team/2845/image',
+        team2Image: 'https://img.sofascore.com/api/v1/team/2820/image',
+        buttons: [
+            { text: 'Link', link: 'https://raketextra.blogspot.com/p/v24.html' },
+        ]
+    },
+    <!-- events -->
+    
+    
+    
+    
+    
+    
+   
+    
+        
    
     
     // Add more events here
@@ -194,3 +284,4 @@ function displaySchedules() {
 }
 
 // Display schedules
+displaySchedules();
