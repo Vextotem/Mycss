@@ -5,7 +5,7 @@ const schedules = [
   
   
      
-   <!-- events -->
+   // events
     {
         event: 'U17 AFC Asian Cup',
         eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/20163/image/dark',
@@ -18,11 +18,11 @@ const schedules = [
             { text: 'Link', link: 'https://raketextra.blogspot.com/p/v30.html' },
         ]
     },
-    <!-- events -->
+    // events
     
     
     
-    <!-- events -->
+    // events
     {
         event: 'U17 AFC Asian Cup',
         eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/20163/image/dark',
@@ -35,11 +35,11 @@ const schedules = [
             { text: 'Link', link: 'https://raketextra.blogspot.com/p/v31.html' },
         ]
     },
-    <!-- events -->
+    // events
     
     
     
-     <!-- events -->
+     // events
     {
         event: 'U17 AFC Asian Cup',
         eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/20163/image/dark',
@@ -52,12 +52,12 @@ const schedules = [
             { text: 'Link', link: 'https://raketextra.blogspot.com/p/v29.html' },
         ]
     },
-    <!-- events -->
+    // events
     
     
     
     
-       <!-- events -->
+       // events
     {
         event: 'U17 AFC Asian Cup',
         eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/20163/image/dark',
@@ -70,13 +70,13 @@ const schedules = [
             { text: 'Link', link: 'https://raketextra.blogspot.com/p/v28.html' },
         ]
     },
-    <!-- events -->
+    // events
     
     
     
     
     
-      <!-- events -->
+      // events
     {
         event: 'Serie A',
         eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/23/image/dark',
@@ -89,13 +89,13 @@ const schedules = [
             { text: 'Link', link: 'https://raketextra.blogspot.com/p/v27.html' },
         ]
     },
-    <!-- events -->
+    // events
     
     
     
     
     
-     <!-- events -->
+     // events
     {
         event: 'Premier League',
         eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/17/image/dark',
@@ -108,12 +108,12 @@ const schedules = [
             { text: 'Link', link: 'https://raketextra.blogspot.com/p/v25.html' },
         ]
     },
-    <!-- events -->
+    // events
     
     
     
     
-      <!-- events -->
+      // events
     {
         event: 'LaLiga',
         eventLogo: 'https://img.sofascore.com/api/v1/unique-tournament/8/image/dark',
@@ -126,7 +126,7 @@ const schedules = [
             { text: 'Link', link: 'https://raketextra.blogspot.com/p/v24.html' },
         ]
     },
-    <!-- events -->
+    // events
     
     
     
