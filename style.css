@@ -1,4 +1,7 @@
-/* Reset margin and padding for all elements */
+/* =================================
+   RESET & BASE STYLES
+   ================================= */
+
 * {
   margin: 0;
   padding: 0;
@@ -9,8 +12,103 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 10px;
-  color: #FFFFFF;
-  background-color: #1a1a1a; /* Added dark background */
+  color: #ffffff;
+  background-color: #1a1a1a;
+}
+
+/* =================================
+   SEARCH COMPONENTS
+   ================================= */
+
+.search-container {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #333;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.search-box {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: 2px solid #555;
+  border-radius: 25px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background: #444;
+  color: #ffffff;
+}
+
+.search-box:focus {
+  border-color: #fa8072;
+  box-shadow: 0 0 0 3px rgba(250, 128, 114, 0.2);
+}
+
+.search-box::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.search-stats {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: #aaa;
+  font-size: 18px;
+  background: #333;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.no-results-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+/* =================================
+   SECTION HEADERS
+   ================================= */
+
+.section-header {
+  background: #fa8072;
+  color: #ffffff;
+  padding: 12px 20px;
+  margin: 20px 0 10px 0;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 16px;
+}
+
+.section-header.live {
+  background: #ff4444;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+/* =================================
+   MATCH COMPONENTS
+   ================================= */
+
+.match-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .match-container {
@@ -18,25 +116,38 @@ body {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   color: inherit;
-  border: 1px solid #3d3d3d; /* Darker border */
+  border: 1px solid #3d3d3d;
   background-color: #333;
-  transition: all 0.3s ease; /* Smooth transitions */
+  transition: all 0.3s ease;
 }
 
 .match-container:hover {
   background-color: #000000;
   transform: translateY(-2px);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
 }
 
 .match-container.active {
   background-color: #000000;
 }
 
-/* Event Header with Logo */
+.match-container.hidden {
+  display: none;
+}
+
+.match-container.live-match {
+  border: 2px solid #ff4444;
+  background: linear-gradient(135deg, #2a1a1a, #1a1a1a);
+  box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
+}
+
+/* =================================
+   EVENT HEADER
+   ================================= */
+
 .event-header {
   display: flex;
   align-items: center;
@@ -44,17 +155,17 @@ body {
   margin-bottom: 15px;
   padding-bottom: 10px;
   position: relative;
-  color: #FA8072;
+  color: #fa8072;
 }
 
-.event-header:after {
+.event-header::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 1px;
-  background-color: #FA8072;
+  background-color: #fa8072;
 }
 
 .event-logo {
@@ -62,12 +173,15 @@ body {
   height: 35px;
   object-fit: contain;
   border-radius: 50%;
-  border: 2px solid #FA8072;
+  border: 2px solid #fa8072;
   padding: 2px;
-  background: #fff;
+  background: #ffffff;
 }
 
-/* Team Images */
+/* =================================
+   TEAM COMPONENTS
+   ================================= */
+
 .team-images {
   display: flex;
   justify-content: center;
@@ -81,18 +195,21 @@ body {
   height: 50px;
   object-fit: contain;
   border-radius: 50%;
-  border: 2px solid #FA8072;
+  border: 2px solid #fa8072;
   padding: 2px;
-  background: #fff;
+  background: #ffffff;
 }
 
-/* Match Details */
 .matchup {
   text-align: center;
   font-weight: bold;
   margin: 10px 0;
-  color: #FA8072;
+  color: #fa8072;
 }
+
+/* =================================
+   MATCH DETAILS
+   ================================= */
 
 .details {
   display: flex;
@@ -102,15 +219,19 @@ body {
   flex-wrap: wrap;
 }
 
-.details .date, 
+.details .date,
 .details .time {
   background-color: #444;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 0.9em;
+  color: #ffffff;
 }
 
-/* Status Indicators */
+/* =================================
+   STATUS INDICATORS
+   ================================= */
+
 .status {
   text-align: center;
   padding: 5px;
@@ -119,12 +240,12 @@ body {
 }
 
 .status.Online {
-  background-color: #2ecc71; /* Green background */
-  color: white;
+  background-color: #2ecc71;
+  color: #ffffff;
 }
 
 .live-icon {
-  color: #FF4500;
+  color: #ff4500;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -139,12 +260,15 @@ body {
 }
 
 .countdown {
-  color: #FFD700;
+  color: #ffd700;
   font-weight: bold;
   padding: 5px;
 }
 
-/* Responsive Design */
+/* =================================
+   RESPONSIVE DESIGN
+   ================================= */
+
 @media (max-width: 600px) {
   .event-header {
     font-size: 1.1em;
@@ -164,112 +288,8 @@ body {
     gap: 10px;
   }
 
-  .details .date, 
+  .details .date,
   .details .time {
     font-size: 0.8em;
   }
 }
-
-.match-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-
- .search-container {
-            margin-bottom: 20px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .search-box {
-            width: 100%;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-           outline: none;
-            transition: border-color 0.3s ease;
-            box-sizing: border-box;
-        }
-        
-        .search-box:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
-        }
-        
-        .search-box::placeholder {
-            color: #999;
-            font-style: italic;
-        }
-        
-        .no-results {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-            font-size: 18px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        
-        .no-results-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-        
-        .match-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            margin-bottom: 10px;
-        }
-        
-        .match-container {
-            transition: all 0.3s ease;
-        }
-        
-        .match-container.hidden {
-            display: none;
-        }
-        
-        .search-stats {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #666;
-            font-size: 14px;
-        }
-
-       /* Highlight live matches */
-.match-container.live-match {
-    border: 2px solid #ff4444;
-    background: linear-gradient(135deg, #2a1a1a, #1a1a1a);
-    box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
-}
-
-        /* Section headers */
-        .section-header {
-            background: #007bff;
-            color: white;
-            padding: 12px 20px;
-            margin: 20px 0 10px 0;
-            border-radius: 8px;
-            font-weight: bold;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .section-header.live {
-            background: #dc3545;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { opacity: 1; }
-        }
